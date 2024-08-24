@@ -16,7 +16,6 @@ namespace CylinderShadingPhong.Views;
 
 public partial class MainWindow : Window
 {
-    bool first = true;
     private WriteableBitmap _bitmap;
     private WriteableBitmap _bitmap2;
 
@@ -93,9 +92,6 @@ public partial class MainWindow : Window
 
         _bitmap = CreateBitmapFromPixels(scene.pixels, width, height);
         
-        canvasImage.Source = _bitmap;
-
-        canvasImage.InvalidateVisual();
     }
     public WriteableBitmap CreateBitmapFromPixels(int[] pixels, int width, int height)
     {
@@ -119,7 +115,6 @@ public partial class MainWindow : Window
         using (var bitmapLock = writeableBitmap.Lock())
         {
             Marshal.Copy(pixels, 0, bitmapLock.Address, pixels.Length);
-        }
         }
         // Return the created WriteableBitmap
         return writeableBitmap;
