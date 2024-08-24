@@ -8,6 +8,6 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="CylinderShadingPhong">
-    <Image Name="canvasImage"/>
+    <Image Source="{Binding sourceBitmap}"/>
 
 </Window>
