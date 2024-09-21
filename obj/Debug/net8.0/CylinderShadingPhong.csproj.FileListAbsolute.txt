@@ -67,3 +67,4 @@
 /home/actuallynotbillgates/Documents/course/CylinderShadingPhong/obj/Debug/net8.0/CylinderShadingPhong.genruntimeconfig.cache
 /home/actuallynotbillgates/Documents/course/CylinderShadingPhong/obj/Debug/net8.0/ref/CylinderShadingPhong.dll
 /home/actuallynotbillgates/Documents/course/CylinderShadingPhong/bin/Debug/net8.0/MathNet.Numerics.dll
+/home/actuallynotbillgates/Documents/course/CylinderShadingPhong/obj/Debug/net8.0/CylinderShadingPhong.sourcelink.json

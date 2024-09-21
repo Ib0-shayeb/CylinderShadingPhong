@@ -67,14 +67,14 @@ namespace CylinderShadingPhong.Entities
                     C = new CylinderVertex{position = botBaseCenter, normal = botBaseNormal},
                 });
                 sideTriangles.Add(new CylinderTriangle{
-                    A = new CylinderVertex{position = botPreVerticies[i],
+                    B = new CylinderVertex{position = botPreVerticies[i],
                      normal = Vector<double>.Build.DenseOfArray([botPreVerticies[i][0] / radius, 0, botPreVerticies[i][2] / radius, 0])},
-                    B = new CylinderVertex{position = botPreVerticies[(i + 1) % (n)],
+                    A = new CylinderVertex{position = botPreVerticies[(i + 1) % (n)],
                      normal = Vector<double>.Build.DenseOfArray([botPreVerticies[(i + 1) % (n)][0] / radius, 0, botPreVerticies[(i + 1) % (n)][2] / radius, 0])},
                     C = new CylinderVertex{position = topPreVerticies[i],
                      normal = Vector<double>.Build.DenseOfArray([topPreVerticies[i][0] / radius, 0, topPreVerticies[i][2] / radius, 0])}
                 });
-                topTriangles.Add(new CylinderTriangle{
+                sideTriangles.Add(new CylinderTriangle{
                     A = new CylinderVertex{position = topPreVerticies[i],
                      normal = Vector<double>.Build.DenseOfArray([topPreVerticies[i][0] / radius, 0, topPreVerticies[i][2] / radius, 0])},
                     B = new CylinderVertex{position = topPreVerticies[(i + 1) % (n)],
