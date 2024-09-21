@@ -150,9 +150,9 @@ namespace CylinderShadingPhong.Entities
             p2 = camera.ProjectPoint(camera.AdjustCam(p2g));
             p3 = camera.ProjectPoint(camera.AdjustCam(p3g));
 
-            double z1 = p1[2];
-            double z2 = p2[2];
-            double z3 = p3[2];
+            double z1 = p1[2];// == 0 ? 0.1 : p1[2];
+            double z2 = p2[2];// == 0 ? 0.1 : p2[2];
+            double z3 = p3[2];// == 0 ? 0.1 : p3[2];
 
             ptx = p1 + Vector<double>.Build.DenseOfArray([1,0,0,0]);
             pty = p1 + Vector<double>.Build.DenseOfArray([0,1,0,0]);
@@ -160,8 +160,8 @@ namespace CylinderShadingPhong.Entities
             double tx = (p2[0] - p1[0] != 0) ? (ptx[0] - p1[0])/(p2[0] - p1[0]) : (ptx[1] - p1[1])/(p2[1] - p1[1]);
             double ty = (p3[0] - p1[0] != 0) ? (pty[0] - p1[0])/(p3[0] - p1[0]) : (pty[1] - p1[1])/(p3[1] - p1[1]);
 
-            double ux = ((1/((z2-z1) * tx + z1)) - 1/z1) /( (1/z2) -1/z1);
-            double uy = ((1/((z3-z1) * ty + z1)) - 1/z1) /( (1/z3) -1/z1);
+            double ux = (z1 == z2) ? tx :((1/((z2-z1) * tx + z1)) - 1/z1) /( (1/z2) -1/z1);
+            double uy = (z1 == z3) ? ty :((1/((z3-z1) * ty + z1)) - 1/z1) /( (1/z3) -1/z1);
 
             ptgx = ux * (p2g - p1g) + p1g;     
             ptgy = uy * (p3g - p1g) + p1g;
@@ -172,8 +172,8 @@ namespace CylinderShadingPhong.Entities
             dPosY[3] = 0;//its a vector
 
 
-            double m1 = (v2[1] - v1[1])/(v2[0] - v1[0]);
-            double m2 = (v1[1] - v0[1])/(v1[0] - v0[0]);
+            double m1 = (v2[0] == v1[0]) ? 0 : (v2[1] - v1[1])/(v2[0] - v1[0]);
+            double m2 = (v1[0] == v0[0]) ? 0 : (v1[1] - v0[1])/(v1[0] - v0[0]);
             double b2 = v1[1] - m2 * v1[0];
             double b1;
 
@@ -207,8 +207,9 @@ namespace CylinderShadingPhong.Entities
                         z2 = v1[2];
 
                         double t = (v1[0] - v0[0] != 0) ? (X - v0[0])/(v1[0] - v0[0]) : (Y - v0[1])/(v1[1] - v0[1]);
-                        double u = ((1/((z2-z1) * t + z1)) - 1/z1) /( (1/z2) -1/z1);
+                        double u = (z1 == z2) ? t : ((1/((z2-z1) * t + z1)) - 1/z1) /( (1/z2) -1/z1);
 
+                        bool check = Double.IsNaN(u);
                         normal = u * (Triangle.B.normal - Triangle.A.normal) + Triangle.A.normal;
                     }
                     else {
@@ -226,16 +227,16 @@ namespace CylinderShadingPhong.Entities
             var Ii = Vector<double>.Build.DenseOfArray([0,0,0]);
             // var Ia = Vector<double>.Build.DenseOfArray([255,0,0]);
 
-            var IRed =  Ia[0] * material.ambientReflectionCoefficient[0];
-                    //+ material.diffuseReflectionCoefficient[0] * Ii[0] * Math.Max( normal * li, 0);
+            var IRed =  Ia[0] * material.ambientReflectionCoefficient[0]
+                    + material.diffuseReflectionCoefficient[0] * Ii[0] * Math.Max( normal * li, 0);
                     //+ material.specularReflectionCoefficient[0] * Ii[0] * Math.Max( v * ri, 0);
-
-            var IGreen =  Ia[1] * material.ambientReflectionCoefficient[1];
-                    //+ material.diffuseReflectionCoefficient[1] * Ii[1] * Math.Max( normal * li, 0);
+            bool s = Math.Max(Math.Min((int)IRed, 255), 0) != 255;
+            var IGreen =  Ia[1] * material.ambientReflectionCoefficient[1]
+                    + material.diffuseReflectionCoefficient[1] * Ii[1] * Math.Max( normal * li, 0);
                     //+ material.specularReflectionCoefficient[1] * Ii[1] * Math.Max( v * ri, 0);
 
-            var IBlue =  Ia[2] * material.ambientReflectionCoefficient[2];
-                    //+ material.diffuseReflectionCoefficient[2] * Ii[2] * Math.Max( normal * li, 0);
+            var IBlue =  Ia[2] * material.ambientReflectionCoefficient[2]
+                    + material.diffuseReflectionCoefficient[2] * Ii[2] * Math.Max( normal * li, 0);
                     //+ material.specularReflectionCoefficient[2] * Ii[2] * Math.Max( v * ri, 0);
             
             return rgbToRgba8888(Math.Max(Math.Min((int)IRed, 255), 0) , Math.Max(Math.Min((int)IGreen, 255), 0), Math.Max(Math.Min((int)IBlue, 255), 0), 255);

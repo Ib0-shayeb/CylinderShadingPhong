@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CylinderShadingPhong")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+df0079c18f1c537faf4a4e8f51a8a9e7d7c753a8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+00bbd6cadea19e0d2c018e549fe3b4a24e06196b")]
 [assembly: System.Reflection.AssemblyProductAttribute("CylinderShadingPhong")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CylinderShadingPhong")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
