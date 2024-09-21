@@ -37,21 +37,21 @@ namespace CylinderShadingPhong.Entities
         public void drawPoints(){
             pixels = new int[width * height];
             
-            for (int i = 0; i < cylinder.botPreVerticies.Count; i++){
-                var v = camera.ProjectPoint(camera.AdjustCam(cylinder.botPreVerticies[i]));
-                int x = (int)Math.Round(v[0]);
-                int y = (int)Math.Round(v[1]);
+            // for (int i = 0; i < cylinder.botPreVerticies.Count; i++){
+            //     var v = camera.ProjectPoint(camera.AdjustCam(cylinder.botPreVerticies[i]));
+            //     int x = (int)Math.Round(v[0]);
+            //     int y = (int)Math.Round(v[1]);
 
-                if(isInFrame(x,y,width,height)) pixels[y * width + x] = rgbToRgba8888(0, 0, 0, 255);
+            //     if(isInFrame(x,y,width,height)) pixels[y * width + x] = rgbToRgba8888(0, 0, 0, 255);
 
-                v = camera.ProjectPoint(camera.AdjustCam(cylinder.topPreVerticies[i]));
-                x = (int)Math.Round(v[0]);
-                y = (int)Math.Round(v[1]);
+            //     v = camera.ProjectPoint(camera.AdjustCam(cylinder.topPreVerticies[i]));
+            //     x = (int)Math.Round(v[0]);
+            //     y = (int)Math.Round(v[1]);
 
-                if(isInFrame(x,y,width,height)) pixels[y * width + x] = rgbToRgba8888(0, 0, 0, 255);
-            }
+            //     if(isInFrame(x,y,width,height)) pixels[y * width + x] = rgbToRgba8888(0, 0, 0, 255);
+            // }
 
-            for(int i = 0; i < cylinder.sideTriangles.Count; i+=2){//every otherfor visiility tmp
+            for(int i = 0; i < cylinder.sideTriangles.Count; i+=1){//every otherfor visiility tmp
                 var p1 = camera.ProjectPoint(camera.AdjustCam(cylinder.sideTriangles[i].A.position));
                 var p2 = camera.ProjectPoint(camera.AdjustCam(cylinder.sideTriangles[i].B.position));
                 var p3 = camera.ProjectPoint(camera.AdjustCam(cylinder.sideTriangles[i].C.position));
@@ -68,44 +68,44 @@ namespace CylinderShadingPhong.Entities
                     // setPoint((int)p2[0], (int)p2[1], rgbToRgba8888(255, 0, 0, 255));
                     // setPoint((int)p3[0], (int)p3[1], rgbToRgba8888(255, 0, 0, 255));
 
-                FillTriangle(p1,p2,p3,rgbToRgba8888(100, 0, 0, 255), cylinder.sideTriangles[i]);
+                FillTriangle(p1,p2,p3,Vector<double>.Build.DenseOfArray([255,0,0]), cylinder.sideTriangles[i], false);
                 }
             }
 
             bool viewTopBase = camera.cZ * Camera.ThreeD(cylinder.topTriangles[0].A.normal) > 0;
 
-            // if(viewTopBase){
-            //     for(int i = 0; i < cylinder.topTriangles.Count; i++){//every otherfor visiility tmp
-            //     var p1 = camera.ProjectPoint(camera.AdjustCam(cylinder.topTriangles[i].A.position));
-            //     var p2 = camera.ProjectPoint(camera.AdjustCam(cylinder.topTriangles[i].B.position));
-            //     var p3 = camera.ProjectPoint(camera.AdjustCam(cylinder.topTriangles[i].C.position));
-            //     //if triangle is out of frame totaly
-            //     if(!isInFrame((int)p1[0], (int)p1[1], width, height) &&
-            //     !isInFrame((int)p2[0], (int)p2[1], width, height) && 
-            //     !isInFrame((int)p3[0], (int)p3[1], width, height))
-            //         break;
+            if(!viewTopBase){//bottm
+                for(int i = 0; i < cylinder.topTriangles.Count; i++){//every otherfor visiility tmp
+                var p1 = camera.ProjectPoint(camera.AdjustCam(cylinder.topTriangles[i].A.position));
+                var p2 = camera.ProjectPoint(camera.AdjustCam(cylinder.topTriangles[i].B.position));
+                var p3 = camera.ProjectPoint(camera.AdjustCam(cylinder.topTriangles[i].C.position));
+                //if triangle is out of frame totaly
+                if(!isInFrame((int)p1[0], (int)p1[1], width, height) &&
+                !isInFrame((int)p2[0], (int)p2[1], width, height) && 
+                !isInFrame((int)p3[0], (int)p3[1], width, height))
+                    break;
                 
 
-            //     FillTriangle(p1,p2,p3,rgbToRgba8888(100, 0, 0, 255), cylinder.topTriangles[i]);
+                FillTriangle(p1,p2,p3,Vector<double>.Build.DenseOfArray([255,0,0]), cylinder.topTriangles[i], true);
                 
-            //     }
-            // }
-            // else{
-            //     for(int i = 0; i < cylinder.botTriangles.Count; i++){//every otherfor visiility tmp
-            //     var p1 = camera.ProjectPoint(camera.AdjustCam(cylinder.botTriangles[i].A.position));
-            //     var p2 = camera.ProjectPoint(camera.AdjustCam(cylinder.botTriangles[i].B.position));
-            //     var p3 = camera.ProjectPoint(camera.AdjustCam(cylinder.botTriangles[i].C.position));
-            //     //if triangle is out of frame totaly
-            //     if(!isInFrame((int)p1[0], (int)p1[1], width, height) &&
-            //     !isInFrame((int)p2[0], (int)p2[1], width, height) && 
-            //     !isInFrame((int)p3[0], (int)p3[1], width, height))
-            //         break;
+                }
+            }
+            else{//top
+                for(int i = 0; i < cylinder.botTriangles.Count; i++){//every otherfor visiility tmp
+                var p1 = camera.ProjectPoint(camera.AdjustCam(cylinder.botTriangles[i].A.position));
+                var p2 = camera.ProjectPoint(camera.AdjustCam(cylinder.botTriangles[i].B.position));
+                var p3 = camera.ProjectPoint(camera.AdjustCam(cylinder.botTriangles[i].C.position));
+                //if triangle is out of frame totaly
+                if(!isInFrame((int)p1[0], (int)p1[1], width, height) &&
+                !isInFrame((int)p2[0], (int)p2[1], width, height) && 
+                !isInFrame((int)p3[0], (int)p3[1], width, height))
+                    break;
                 
 
-            //     FillTriangle(p1,p2,p3,rgbToRgba8888(100, 0, 0, 255), cylinder.botTriangles[i]);
+                FillTriangle(p1,p2,p3, Vector<double>.Build.DenseOfArray([255,0,0]), cylinder.botTriangles[i], true);
                 
-            //     }
-            // }
+                }
+            }
 
             
      
@@ -131,7 +131,7 @@ namespace CylinderShadingPhong.Entities
         public static int rgbToRgba8888(int r, int g, int b, int a){
             return (a << 24) | (b << 16) | (g << 8) | r;
         }
-        public void FillTriangle(Vector<double> v0, Vector<double> v1, Vector<double> v2, int color, CylinderTriangle Triangle)
+        public void FillTriangle(Vector<double> v0, Vector<double> v1, Vector<double> v2, Vector<double> Ia, CylinderTriangle Triangle, bool IsBase)
         {
             int x0 = (int)v0[0], y0 = (int)v0[1], x1 = (int)v1[0], y1 = (int)v1[1], x2 = (int)v2[0], y2 = (int)v2[1];
             int[] order = new int[] {0, 1, 2};
@@ -201,38 +201,44 @@ namespace CylinderShadingPhong.Entities
                     double Y = X * m2 + b2;
                     //double px = (v1[0] - X) / (v1[0] - v0[0]);//fraction of AB line from v1
 
-                    z1 = v0[2];
-                    z2 = v1[2];
+                    Vector<double> normal;
+                    if(!IsBase){
+                        z1 = v0[2];
+                        z2 = v1[2];
 
-                    double t = (v1[0] - v0[0] != 0) ? (X - v0[0])/(v1[0] - v0[0]) : (Y - v0[1])/(v1[1] - v0[1]);
-                    double u = ((1/((z2-z1) * t + z1)) - 1/z1) /( (1/z2) -1/z1);
+                        double t = (v1[0] - v0[0] != 0) ? (X - v0[0])/(v1[0] - v0[0]) : (Y - v0[1])/(v1[1] - v0[1]);
+                        double u = ((1/((z2-z1) * t + z1)) - 1/z1) /( (1/z2) -1/z1);
 
-                    Vector<double> normal = u * (Triangle.B.normal - Triangle.A.normal) + Triangle.A.normal;
+                        normal = u * (Triangle.B.normal - Triangle.A.normal) + Triangle.A.normal;
+                    }
+                    else {
+                        normal = Triangle.A.normal;
+                    }
 
-                    setPoint(j, y0 + i, calculatingPointColor(posG, normal));
+                    setPoint(j, y0 + i, calculatingPointColor(posG, normal, Ia));
                 }
             }
         }
-        public int calculatingPointColor(Vector<double> pos, Vector<double> normal){
+        public int calculatingPointColor(Vector<double> pos, Vector<double> normal, Vector<double> Ia){
             Vector<double> v = (Camera.FourD(camera.cPos) - pos).Normalize(2);
             Vector<double> li = (Camera.FourD(lightingPosition) - pos).Normalize(2);
             var ri = 2 * (normal * li) * normal - li;
             var Ii = Vector<double>.Build.DenseOfArray([0,0,0]);
-            var Ia = Vector<double>.Build.DenseOfArray([255,0,0]);
+            // var Ia = Vector<double>.Build.DenseOfArray([255,0,0]);
 
-            var IRed =  Ia[0] * material.ambientReflectionCoefficient [0]
-                    + material.diffuseReflectionCoefficient[0] * Ii[0] * Math.Max( normal * li, 0)
-                    + material.specularReflectionCoefficient[0] * Ii[0] * Math.Max( v * ri, 0);
+            var IRed =  Ia[0] * material.ambientReflectionCoefficient[0];
+                    //+ material.diffuseReflectionCoefficient[0] * Ii[0] * Math.Max( normal * li, 0);
+                    //+ material.specularReflectionCoefficient[0] * Ii[0] * Math.Max( v * ri, 0);
 
-            var IGreen =  Ia[1] * material.ambientReflectionCoefficient [1]
-                    + material.diffuseReflectionCoefficient[1] * Ii[1] * Math.Max( normal * li, 0)
-                    + material.specularReflectionCoefficient[1] * Ii[1] * Math.Max( v * ri, 0);
-                    
-            var IBlue =  Ia[2] * material.ambientReflectionCoefficient [2]
-                    + material.diffuseReflectionCoefficient[2] * Ii[2] * Math.Max( normal * li, 0)
-                    + material.specularReflectionCoefficient[2] * Ii[2] * Math.Max( v * ri, 0);
+            var IGreen =  Ia[1] * material.ambientReflectionCoefficient[1];
+                    //+ material.diffuseReflectionCoefficient[1] * Ii[1] * Math.Max( normal * li, 0);
+                    //+ material.specularReflectionCoefficient[1] * Ii[1] * Math.Max( v * ri, 0);
+
+            var IBlue =  Ia[2] * material.ambientReflectionCoefficient[2];
+                    //+ material.diffuseReflectionCoefficient[2] * Ii[2] * Math.Max( normal * li, 0);
+                    //+ material.specularReflectionCoefficient[2] * Ii[2] * Math.Max( v * ri, 0);
             
-            return rgbToRgba8888((int)IRed, (int)IGreen, (int)IBlue, 255);
+            return rgbToRgba8888(Math.Max(Math.Min((int)IRed, 255), 0) , Math.Max(Math.Min((int)IGreen, 255), 0), Math.Max(Math.Min((int)IBlue, 255), 0), 255);
         }
 
         private void Swap(ref Vector<double> v0, ref Vector<double> v1)

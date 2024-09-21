@@ -48,9 +48,9 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
     public MainWindowViewModel()
     {
         material = new Material{
-            ambientReflectionCoefficient = Vector<double>.Build.DenseOfArray([100,0,0]),
-            diffuseReflectionCoefficient = Vector<double>.Build.DenseOfArray([0,0,0]),
-            specularReflectionCoefficient = Vector<double>.Build.DenseOfArray([0,0,0])
+            ambientReflectionCoefficient = Vector<double>.Build.DenseOfArray([1,1,1]),
+            diffuseReflectionCoefficient = Vector<double>.Build.DenseOfArray([1,1,1]),
+            specularReflectionCoefficient = Vector<double>.Build.DenseOfArray([1,1,1])
         };
         width = 800; height = 600;
         camera = new Camera(Vector<double>.Build.DenseOfArray([0,20,20]), Vector<double>.Build.DenseOfArray([0,0,0]), width, height);
